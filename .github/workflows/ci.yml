@@ -20,3 +20,15 @@ jobs:
 
       - name: Check Python syntax
         run: python -m compileall -q src
+
+      - name: Install dbt
+        run: pip install dbt-core==1.11.0 dbt-postgres==1.11.0
+
+      - name: Validate dbt project
+        env:
+          DB_USER: ci_user
+          DB_PASSWORD: ci_placeholder
+        run: |
+          dbt parse \
+            --project-dir erp_wms_dbt \
+            --profiles-dir erp_wms_dbt/docker_profile
