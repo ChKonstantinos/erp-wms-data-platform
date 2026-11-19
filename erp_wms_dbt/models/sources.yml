@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: silver
+    schema: silver
+    tables:
+      - name: v_order_fulfillment
+        description: "Validated order fulfillment data from the Silver layer"
+
+      - name: v_wms_latest_stock
+        description: "Latest available stock per warehouse and product"

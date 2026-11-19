@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: order_fulfillment_summary
+    description: "Order-level fulfillment metrics derived from Silver data"
+
+    columns:
+      - name: order_id
+        description: "Unique identifier of each order"
+        data_tests:
+          - unique
+          - not_null
