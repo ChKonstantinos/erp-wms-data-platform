@@ -21,6 +21,9 @@ jobs:
       - name: Check Python syntax
         run: python -m compileall -q src
 
+      - name: Check Airflow DAG syntax
+        run: python -m compileall -q airflow/dags
+
       - name: Install dbt
         run: pip install dbt-core==1.11.0 dbt-postgres==1.11.0
 
