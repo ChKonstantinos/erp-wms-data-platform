@@ -40,3 +40,6 @@ Thumbs.db
 
 # dbt starter example models
 erp_wms_dbt/models/example/
+
+# Airflow generated configuration
+airflow/config/

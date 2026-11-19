@@ -75,13 +75,14 @@ x-airflow-common:
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
     DB_USER: ${DB_USER}
     DB_PASSWORD: ${DB_PASSWORD}
+    PYTHONPATH: /opt/airflow/erp-wms-data-platform
   volumes:
     - ./dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
     - ${AIRFLOW_PROJ_DIR:-.}/data:/opt/airflow/data
-    - ../erp-wms-data-platform:/opt/airflow/erp-wms-data-platform:ro
+    - ..:/opt/airflow/erp-wms-data-platform:ro
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
