@@ -91,18 +91,96 @@ Copy `.env.example` to `.env` and replace the placeholder values with your local
 
 The `.env` file is excluded from version control.
 
+## Local Setup & Execution
+
+### Prerequisites
+
+- Docker Desktop
+- Python 3.12
+- Git
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/ChKonstantinos/erp-wms-data-platform.git
+cd erp-wms-data-platform
+```
+
+### 2. Configure Environment Variables
+
+Copy `.env.example` to `.env` and update the database credentials and Airflow settings for your local environment.
+
+The `.env` file is excluded from version control.
+
+python -m pip install -r requirements.txt
+
+### 3. Start PostgreSQL
+
+```bash
+docker compose up -d postgres
+```
+
+The PostgreSQL service runs on port `5434` on the host.
+
+### 4. Start Apache Airflow
+
+```bash
+docker compose --env-file .env -f airflow/compose.yaml up -d --build
+```
+
+The Airflow environment uses Docker Compose and connects to the ERP/WMS PostgreSQL database.
+
+### 5. Execute the Pipeline
+
+Open the Airflow web interface and trigger the `erp_wms_data_platform` DAG.
+
+The DAG executes the following stages:
+
+1. Pipeline audit initialization
+2. Bronze ingestion
+3. Silver picking transformation
+4. Silver stock transformation
+5. dbt Gold model execution
+
+Monitor task execution and pipeline status through the Airflow interface.
+
+### 6. Run Data Validation Tests
+
+With the PostgreSQL environment running and the Python dependencies installed:
+
+```bash
+python -m pytest -q tests/test_gold_kpis.py tests/test_silver_picking.py tests/test_silver_stock.py
+```
+
+These tests validate selected Silver-layer datasets and Gold-layer KPIs.
+
+## Testing & Continuous Integration
+
+The project includes Python tests for Silver-layer data validation, Gold-layer KPIs, and pipeline integration.
+
+Eight Silver and Gold validation tests have been executed successfully in the local development environment.
+
+GitHub Actions provides automated checks for:
+
+- Python source syntax
+- Airflow DAG syntax
+- dbt project parsing
+
+Database-dependent integration tests are currently executed locally and are not part of the GitHub Actions workflow.
+
 ## Development Status
 
-The core data pipeline, Airflow orchestration, dbt models, and Power BI reporting have been implemented and tested in the local development environment.
+**Portfolio Version 1.0 — Core Implementation Complete**
 
-GitHub Actions CI configuration has been added. Further automated checks and deployment improvements are planned.
+The core ERP/WMS data pipeline, PostgreSQL data layers, Airflow orchestration, dbt transformations, and Power BI reporting have been implemented.
+
+The complete Airflow DAG has been executed successfully in the local Docker environment.
 
 ## Future Improvements
 
-- Expand CI coverage with Python and dbt tests.
-- Improve environment setup documentation and reproducibility.
-- Extend data quality monitoring.
-- Refine pipeline deployment and configuration.
+- Extend automated testing with isolated database environments.
+- Improve reproducibility through fresh-environment setup validation.
+- Expand operational monitoring and observability.
 
 ## Project Scope
 
